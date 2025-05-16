@@ -29,7 +29,6 @@ class Tweet(BaseModel):
         if statistic not in ["likes", "re_tweets", "dislikes", "shares"]:
             raise ValueError(f"Estatística inválida: {statistic}")
 
-        # Usando o related_name definido nos modelos de interação
         return getattr(self, statistic).count()
 
     def get_all_statistics(self):

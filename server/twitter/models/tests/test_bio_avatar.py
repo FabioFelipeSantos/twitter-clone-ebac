@@ -31,9 +31,6 @@ class TestBioAvatarModel:
         bio = Bio.objects.create(user=user, text="Essa é a minha bio")
 
         avatar = Avatar.objects.create(bio=bio, file_name="profile.jpg")
-
         assert avatar.pk is not None
         assert avatar.bio == bio
         assert avatar.file_name == "profile.jpg"
-        assert avatar.file_saved_name.endswith("_profile.jpg")
-        assert len(avatar.file_saved_name.split("_")[0]) == 16

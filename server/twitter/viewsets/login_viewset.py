@@ -1,8 +1,8 @@
-from rest_framework import status, views, permissions
-from rest_framework.response import Response
+from rest_framework import views, permissions
 
 from twitter.serializers import LoginSerializer
 from twitter.services import AuthService
+from twitter.response import ApiResponse
 
 
 class LoginViewSet(views.APIView):
@@ -19,11 +19,18 @@ class LoginViewSet(views.APIView):
             tokens = AuthService.login(username_or_email, password)
 
             if tokens:
-                return Response(tokens, status=status.HTTP_200_OK)
+                return ApiResponse(
+                    data=tokens, message="Usuário logado com sucesso", status_code=200
+                )
 
-            return Response(
-                {"detail": "Credenciais inválidas ou usuário inativo"},
-                status=status.HTTP_401_UNAUTHORIZED,
+            return ApiResponse(
+                data=None,
+                message="Credenciais inválidas ou usuário inativo",
+                status_code=401,
             )
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return ApiResponse(
+            data=serializer.errors,
+            message="Não foi possível fazer login",
+            status_code=400,
+        )

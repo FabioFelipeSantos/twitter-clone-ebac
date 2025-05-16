@@ -19,7 +19,7 @@ class AuthService:
             except User.DoesNotExist:
                 pass
 
-        if user and user.is_active:
+        if user:
             return AuthService.get_tokens_for_user(user)
         return None
 
@@ -30,6 +30,12 @@ class AuthService:
         return {
             "refresh": str(refresh),
             "access": str(refresh.access_token),
+            "user": {
+                "id": str(user.id),
+                "email": user.email,
+                "nickname": user.nickname,
+                "is_active": user.is_active,
+            },
         }
 
     @staticmethod
